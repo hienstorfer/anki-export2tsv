@@ -50,8 +50,8 @@ def export_selected_notes_as_tsv(browser):
             return
 
     # Get TSV save path
-    tsv_path, _ = getFile(
-        None, "Export TSV", "", "*.tsv", mode=QFileDialog.AcceptSave
+    tsv_path, _ = QFileDialog.getSaveFileName(
+        None, "Export TSV", "", "TSV Files (*.tsv);;All Files (*)"
     )
     if not tsv_path:
         return
