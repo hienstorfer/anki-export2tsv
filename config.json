@@ -1,0 +1,8 @@
+{
+  "presets": [
+    {
+      "name": "Dialogue HR-DE-Dekod",
+      "fields": ["CardID", "SpeakerName", "HR-text", "HR-DE-dekodierung"]
+    }
+  ]
+}
