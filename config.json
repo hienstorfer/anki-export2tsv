@@ -1,8 +1,77 @@
 {
-  "presets": [
-    {
-      "name": "Dialogue HR-DE-Dekod",
-      "fields": ["CardID", "SpeakerName", "HR-text", "HR-DE-dekodierung"]
-    }
-  ]
+    "presets": [
+        {
+            "fields": [
+                "CardID",
+                "SpeakerName",
+                "HR-text",
+                "HR-DE-dekodierung"
+            ],
+            "name": "Dialogue HR-DE-Dekodierung"
+        },
+        {
+            "fields": [
+                "CardID",
+                "SpeakerName",
+                "HR-text",
+                "ES-text"
+            ],
+            "name": "Dialogue HR-ES"
+        },
+        {
+            "fields": [
+                "CardID",
+                "SpeakerName",
+                "FR-text",
+                "ES-text"
+            ],
+            "name": "Dialogue FR-ES"
+        },
+        {
+            "fields": [
+                "CardID",
+                "Question",
+                "Answer1",
+                "Answer2",
+                "Answer3",
+                "Answer4",
+                "Answer5",
+                "Answer6",
+                "Answer7",
+                "Answer8",
+                "Answer9",
+                "Distractor1",
+                "Distractor2",
+                "Distractor3",
+                "Distractor4",
+                "Distractor5",
+                "Distractor6",
+                "Distractor7",
+                "Distractor8",
+                "Distractor9",
+                "Comment",
+                "QuestionDE",
+                "Answer1DE",
+                "Answer2DE",
+                "Answer3DE",
+                "Answer4DE",
+                "Answer5DE",
+                "Answer6DE",
+                "Answer7DE",
+                "Answer8DE",
+                "Answer9DE",
+                "Distractor1DE",
+                "Distractor2DE",
+                "Distractor3DE",
+                "Distractor4DE",
+                "Distractor5DE",
+                "Distractor6DE",
+                "Distractor7DE",
+                "Distractor8DE",
+                "Distractor9DE",
+                "CommentDE"
+            ],
+            "name": "SAP-notes"
+        }
+    ]
 }
