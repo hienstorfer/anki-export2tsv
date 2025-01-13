@@ -1,10 +1,38 @@
-# -*- coding: utf-8 -*-
 from aqt import mw
 from aqt.qt import *
 from aqt.utils import showInfo, getFile, chooseList
 import aqt
 import csv
 from aqt.gui_hooks import browser_will_show
+
+# If you need the BeautifulSoup-based approach:
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
+
+def sanitize_html(text, strip_all=False, filter_tags=False, allowed_tags=None):
+    """
+    Helper function to sanitize HTML in a piece of text.
+      - If strip_all is True, remove all HTML tags and keep only text.
+      - Else if filter_tags is True, remove any HTML tags not in allowed_tags.
+      - Otherwise, return text as-is.
+    """
+    if strip_all:
+        # Strip all HTML tags (a quick approach with re)
+        import re
+        return re.sub(r"<[^>]*>", "", text)  # remove all <...> pairs
+    elif filter_tags and allowed_tags and BeautifulSoup:
+        # Keep only the tags in 'allowed_tags', remove everything else
+        soup = BeautifulSoup(text, "html.parser")
+        for tag in soup.find_all():
+            if tag.name not in allowed_tags:
+                tag.decompose()  # remove disallowed tags entirely
+        # Convert back to HTML, then strip leading/trailing whitespace
+        return str(soup).strip()
+    else:
+        # Return as-is
+        return text
 
 def export_selected_notes_as_tsv(browser):
     selected_notes = browser.selectedNotes()
@@ -13,9 +41,14 @@ def export_selected_notes_as_tsv(browser):
         showInfo("No notes selected. Please select notes to export.")
         return
 
-    # Load configuration for presets
+    # Load configuration
     config = mw.addonManager.getConfig(__name__)
     presets = config.get("presets", [])
+
+    # Get flags
+    strip_all_html = config.get("strip-html", False)
+    filter_html_tags = config.get("filter_tags", False)
+    allowed_tags = config.get("allowed_tags", [])
 
     if not presets:
         showInfo("No presets defined. Please configure presets in addon settings.")
@@ -66,7 +99,17 @@ def export_selected_notes_as_tsv(browser):
     # Collect selected notes' data
     for note_id in selected_notes:
         note = col.getNote(note_id)
-        row = [note.fields[i] for i in export_field_indexes]
+        row = []
+        for idx in export_field_indexes:
+            original_text = note.fields[idx]
+            # Sanitize if requested by the config
+            sanitized = sanitize_html(
+                original_text,
+                strip_all=strip_all_html,
+                filter_tags=filter_html_tags,
+                allowed_tags=allowed_tags
+            )
+            row.append(sanitized)
         rows.append(row)
 
     # Sort rows by the first selected field (ascending order)
